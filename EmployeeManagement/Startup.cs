@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace EmployeeManagement
 {
@@ -26,19 +27,19 @@ namespace EmployeeManagement
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                DeveloperExceptionPageOptions developerExceptionPageOptions = new DeveloperExceptionPageOptions
+                {
+                    SourceCodeLineCount = 10
+                };
+                app.UseDeveloperExceptionPage(developerExceptionPageOptions);
             }
-
-            DefaultFilesOptions defaultFilesOptions = new DefaultFilesOptions();
-            defaultFilesOptions.DefaultFileNames.Clear();
-            defaultFilesOptions.DefaultFileNames.Add("foo.html");
-
-            app.UseDefaultFiles(defaultFilesOptions);
-            app.UseStaticFiles();
+            //file app.UseFileServer performs both UseDefaultFile() and UseStaticFile() actions
+            app.UseFileServer();
 
             app.Run(async (context) =>
             {
-                await context.Response.WriteAsync("Hello World");
+                throw new Exception("Some Error");
+                //await context.Response.WriteAsync("Hello World");
             });
 
 
