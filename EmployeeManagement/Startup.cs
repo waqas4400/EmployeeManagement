@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace EmployeeManagement
 {
@@ -26,22 +27,41 @@ namespace EmployeeManagement
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseRouting();
-
-            app.UseEndpoints(endpoints =>
+            app.Use(async (context, next) =>
             {
-                endpoints.MapGet("/", async context =>
-                {
-                    await context.Response.WriteAsync(_config["MyKey"]);
-                });
+                logger.LogInformation("MW1: Icoming Request");
+                await next();
+                logger.LogInformation("MW1: OutGoing Request");
             });
+
+            app.Use(async (context, next) =>
+            {
+                logger.LogInformation("MW2: Icoming Request");
+                await next();
+                logger.LogInformation("MW2: OutGoing Request");
+            });
+
+            app.Run(async (context) =>
+            {
+                await context.Response.WriteAsync("MW3: Request Handled and Result Produced");
+                logger.LogInformation("MW3: Request Handled and Result Produced");
+            });
+            //app.UseRouting();
+
+            //app.UseEndpoints(endpoints =>
+            //{
+            //    endpoints.MapGet("/", async context =>
+            //    {
+            //        await context.Response.WriteAsync("Hello World");
+            //    });
+            //});
         }
     }
 }
