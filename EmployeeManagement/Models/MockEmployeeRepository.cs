@@ -7,27 +7,33 @@ namespace EmployeeManagement.Models
 {
     public class MockEmployeeRepository : IEmployeeRepository
     {
-        private List<Employee> employees;
+        private List<Employee> _employeesList;
 
         public MockEmployeeRepository()
         {
-            employees = new List<Employee>()
+            _employeesList = new List<Employee>()
             {
                 new Employee { Id = 1, Name="Mary", Department=Dept.HR, Email="mary@pregime.com"},
                 new Employee { Id = 2, Name="John", Department=Dept.IT, Email="john@pregime.com"},
-                new Employee { Id = 3, Name="Sam", Department=Dept.None, Email="sam@pregime.com"},
-                new Employee { Id = 4, Name="Waqas", Department=Dept.Payroll, Email="waqas@pregime.com"}
+                new Employee { Id = 3, Name="Sam", Department=Dept.None, Email="sam@pregime.com"}
             };
+        }
+
+        public Employee Add(Employee employee)
+        {
+            employee.Id = _employeesList.Max(e => e.Id) + 1;
+            _employeesList.Add(employee);
+            return employee;
         }
 
         public IEnumerable<Employee> GetAllEmployees()
         {
-            return employees;
+            return _employeesList;
         }
 
         public Employee GetEmployee(int Id)
         {
-            return employees.FirstOrDefault(e => e.Id == Id);
+            return _employeesList.FirstOrDefault(e => e.Id == Id);
         }
     }
 }
