@@ -49,7 +49,7 @@ namespace EmployeeManagement.Controllers
                 string uniqueFileName = null;
                 if(model.Photo != null)
                 {
-                    string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
+                    string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images\\users");
                     uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
                     String filePath = Path.Combine(uploadsFolder, uniqueFileName);
                     model.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
