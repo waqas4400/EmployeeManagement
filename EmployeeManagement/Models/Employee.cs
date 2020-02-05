@@ -14,7 +14,7 @@ namespace EmployeeManagement.Models
         public String Name { get; set; }
 
         [Display(Name="Office Email")]
-        [RegularExpression(@"^[a - zA - Z0 - 9_.+ -] +@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", ErrorMessage ="Invalid Email Address Format")]
+        //[RegularExpression(@"^[a - zA - Z0 - 9_.+ -] +@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", ErrorMessage ="Invalid Email Address Format")]
         [Required]
         public String Email { get; set; }
         
